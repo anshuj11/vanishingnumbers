@@ -45,6 +45,7 @@ ctx.fillStyle = "#ffffff";
 ctx.font = "30px Arial";
 ctx.fillText(txt, i+10, j+25);
 ctx.closePath();
+j+=5;
 if(j == (height_arr[i/50]-50) ) {
    height_arr[i/50]-=50;
    i = (Math.ceil(Math.random()*100)%20)*50;
@@ -53,19 +54,18 @@ if(j == (height_arr[i/50]-50) ) {
   color_choice = color_arr[color_ind]
   txt = parseInt((Math.floor(Math.random()*10)), 10);
 }
-j+=5;
 }
 var canvas = document.getElementById("myCanvas");
 
 var ctx = canvas.getContext("2d");
 canvas.addEventListener('click', function(e) {
-        ctx.beginPath();
-        x = (Math.floor(e.clientX/50)*50)
-        y = (Math.floor(e.clientY/50)*50)
-        ctx.rect(x, y, 50, 50);
-        ctx.fillStyle = "#EEE";
+ ctx.beginPath();
+        ctx.arc(e.clientX, e.clientY, 7.5, 0, Math.PI * 2, false);
+        ctx.lineWidth = 5;
+        ctx.strokeStyle = "#ff0000";
+        ctx.stroke();
         ctx.fill();
-        ctx.closePath();
+        ctx.fillStyle = "#ff0000";
  }, false);
 
 setInterval(draw, 10);
