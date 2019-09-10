@@ -36,6 +36,12 @@
       const TEXT_COLOR = "#FFFFFF";
       const TEXT_FONT = "30px Arial";
       const SQR_SIZE = 50;
+      const TOTAL_ROWS = 12;
+      const TOTAL_COLS = 16;
+      const MAX_ROW_NUM = 11;
+      const MAX_COL_NUM = 15;
+      const DELTA = 5;
+
       var canvas = document.getElementById("myCanvas");
       var ctx = canvas.getContext("2d");
 
@@ -67,11 +73,11 @@
       var i = 0;
       var j = 0;
       var height_arr = [];
-      for (let m = 0; m < 40; m++) {
+      for (let m = 0; m < TOTAL_COLS; m++) {
         height_arr[m] = 600;
       }
       var column = [];
-      for (let n = 0; n < 16; n++) {
+      for (let n = 0; n < TOTAL_COLS; n++) {
         column[n] = [];
       }
       var color_choice = COLOR_ARR[randomIn10()];
@@ -79,7 +85,7 @@
 
       const draw = function() {
         //Delete the old square
-        draw_sqr(i, j - 5); //default is background color
+        draw_sqr(i, j - DELTA); //default is background color
 
         //Redraw the square at the new position
         draw_sqr(i, j, SQR_SIZE, color_choice);
@@ -88,43 +94,42 @@
         ctx.font = TEXT_FONT;
         ctx.fillText(txt, i + 10, j + 25);
 
-        if (j == height_arr[i / 50] - 50) {
-          height_arr[i / 50] -= 50;
-          column[i / 50].push([txt, color_choice]);
-          console.log("Column[", i / 50, "]: ", column[i / 50]);
-          i = (randomIn100() % 16) * 50;
+        if (j == height_arr[i / SQR_SIZE] - SQR_SIZE) {
+          height_arr[i / SQR_SIZE] -= SQR_SIZE;
+          column[i / SQR_SIZE].push([txt, color_choice]);
+          i = (randomIn100() % TOTAL_COLS) * SQR_SIZE;
           j = 0;
           let color_ind = randomIn10();
           color_choice = COLOR_ARR[color_ind];
           txt = parseInt(randomIn10(), 10);
         }
-        j += 5;
+        j += DELTA;
       };
       canvas.addEventListener(
         "click",
         function(e) {
-          ctx.beginPath();
           x = findOrigin(e.clientX);
           y = findOrigin(e.clientY);
-          //console.log("e.clientX: ", e.clientX, "e.clientY: ", e.clientY);
-          console.log("X: ", x, "Y: ", y);
-          col = x / 50;
-          row = 11 - y / 50;
+          col = x / SQR_SIZE;
+          row = MAX_ROW_NUM - y / SQR_SIZE;
+
           column[col] = column[col]
             .slice(0, row)
             .concat(column[col].slice(row + 1));
-          console.log("After delete Column[", col, "]: ", column[col]);
+
           column[col].forEach((sqr, ind) => {
-            draw_sqr(col * 50, 550 - ind * 50, SQR_SIZE, sqr[1]);
+            draw_sqr(col * SQR_SIZE, 550 - ind * SQR_SIZE, SQR_SIZE, sqr[1]);
             ctx.fillStyle = TEXT_COLOR;
-            ctx.fillText(sqr[0], col * 50 + 10, 550 - ind * 50 + 25);
+            ctx.fillText(
+              sqr[0],
+              col * SQR_SIZE + 10,
+              550 - ind * SQR_SIZE + 25
+            );
           });
 
           new_rows = column[col].length;
-          draw_sqr(col * 50, 550 - new_rows * 50, SQR_SIZE, BACKGROUND_COLOR);
-          height_arr[col] += 50;
-
-          // draw_sqr(x, y);
+          draw_sqr(col * SQR_SIZE, 550 - new_rows * SQR_SIZE);
+          height_arr[col] += SQR_SIZE;
         },
         false
       );

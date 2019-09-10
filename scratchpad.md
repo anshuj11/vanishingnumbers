@@ -15,3 +15,10 @@ draw_sqr(x, y - i _ 10, 10, "#FF0000");
 setTimeout(1000);
 }
 };
+
+
+          //console.log("Column[", i / 50, "]: ", column[i / 50]);
+          //console.log("e.clientX: ", e.clientX, "e.clientY: ", e.clientY);
+          console.log("X: ", x, "Y: ", y);
+          console.log("After delete Column[", col, "]: ", column[col]);
+
