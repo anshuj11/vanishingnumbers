@@ -32,9 +32,10 @@
         "#EDBB99",
         "#D2B4DE"
       ];
+      const OPERATOR_ARR = ["+", "-", "*", "/"];
       const BACKGROUND_COLOR = "#EEE";
       const TEXT_COLOR = "#FFFFFF";
-      const EQN_COLOR = "#0";
+      const EQN_COLOR = "#000000";
       const TEXT_FONT = "30px Arial";
       const SQR_SIZE = 50;
       const TOTAL_ROWS = 12;
@@ -74,6 +75,7 @@
       var j = 0;
       var op1 = 0;
       var op2 = 0;
+      var operator = "+";
       var height_arr = [];
       for (let m = 0; m < TOTAL_COLS; m++) {
         height_arr[m] = 600;
@@ -110,11 +112,12 @@
 
       const generateEquations = function() {
         ctx.fillStyle = BACKGROUND_COLOR;
-        ctx.fillText(`${op1}+${op2}=?`, 250, 30);
+        ctx.fillText(`${op1} ${operator} ${op2} = ?`, 250, 30);
         op1 = randomIn10();
         op2 = randomIn10();
         ctx.fillStyle = EQN_COLOR;
-        ctx.fillText(`${op1}+${op2}=?`, 250, 30);
+        operator = OPERATOR_ARR[randomIn100() % 4];
+        ctx.fillText(`${op1} ${operator} ${op2} = ?`, 250, 30);
       };
 
       canvas.addEventListener(
