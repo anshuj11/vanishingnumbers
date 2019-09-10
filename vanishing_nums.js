@@ -1,26 +1,29 @@
-const COLOR_ARR = [
-  "#A3E4D7",
-  "#EBDEF0",
-  "#FCF3CF",
-  "#E5E7E9",
-  "#AEB6BF",
-  "#839192",
-  "#E6B0AA",
-  "#7FB3D5",
-  "#EDBB99",
-  "#D2B4DE"
-];
-const OPERATOR_ARR = ["+", "-", "*", "/"];
-const BACKGROUND_COLOR = "#EEE";
-const TEXT_COLOR = "#FFFFFF";
-const EQN_COLOR = "#000000";
-const TEXT_FONT = "30px Arial";
-const SQR_SIZE = 50;
-const TOTAL_ROWS = 12;
-const TOTAL_COLS = 16;
-const MAX_ROW_NUM = 11;
-const MAX_COL_NUM = 15;
-const DELTA = 5;
+import Const from "./constants.js";
+const {
+  COLOR_ARR,
+  OPERATOR_ARR,
+  BACKGROUND_COLOR,
+  TEXT_COLOR,
+  EQN_COLOR,
+  TEXT_FONT,
+  SQR_SIZE,
+  TOTAL_ROWS,
+  TOTAL_COLS,
+  MAX_ROW_NUM,
+  MAX_COL_NUM,
+  DELTA
+} = Const;
+
+// import utils from "./utility";
+// const { randomIn10, randomIn100 } = utils;
+
+const randomIn10 = function() {
+  return Math.floor(Math.random() * 10);
+};
+
+const randomIn100 = function() {
+  return Math.floor(Math.random() * 100);
+};
 
 var canvas = document.getElementById("myCanvas");
 var ctx = canvas.getContext("2d");
@@ -32,16 +35,9 @@ const draw_sqr = function(x, y, size = SQR_SIZE, fillColor = BACKGROUND_COLOR) {
   ctx.fill();
 };
 
-const randomIn10 = function() {
-  return Math.floor(Math.random() * 10);
-};
-
-const randomIn100 = function() {
-  return Math.floor(Math.random() * 100);
-};
 const findOrigin = function(num) {
   //find the highest closest multiple of 50 thats less than this num
-  return num - (num % 50);
+  return num - (num % SQR_SIZE);
 };
 
 var i = 0;
@@ -74,7 +70,7 @@ const draw = function() {
   if (j == height_arr[i / SQR_SIZE] - SQR_SIZE) {
     height_arr[i / SQR_SIZE] -= SQR_SIZE;
     column[i / SQR_SIZE].push([txt, color_choice]);
-    i = (randomIn100() % TOTAL_COLS) * SQR_SIZE;
+    i = (randomIn100() % 16) * SQR_SIZE;
     j = 50;
     let color_ind = randomIn10();
     color_choice = COLOR_ARR[color_ind];
@@ -106,10 +102,10 @@ const generateEquations = function() {
 canvas.addEventListener(
   "click",
   function(e) {
-    x = findOrigin(e.clientX);
-    y = findOrigin(e.clientY);
-    col = x / SQR_SIZE;
-    row = MAX_ROW_NUM - y / SQR_SIZE;
+    let x = findOrigin(e.clientX);
+    let y = findOrigin(e.clientY);
+    let col = x / SQR_SIZE;
+    let row = MAX_ROW_NUM - y / SQR_SIZE;
 
     column[col] = column[col].slice(0, row).concat(column[col].slice(row + 1));
 
@@ -119,7 +115,7 @@ canvas.addEventListener(
       ctx.fillText(sqr[0], col * SQR_SIZE + 10, 550 - ind * SQR_SIZE + 25);
     });
 
-    new_rows = column[col].length;
+    let new_rows = column[col].length;
     draw_sqr(col * SQR_SIZE, 550 - new_rows * SQR_SIZE);
     height_arr[col] += SQR_SIZE;
   },
