@@ -24,3 +24,10 @@ setTimeout(1000);
         //console.log(op1, "+", op2, "= ?");
 
 
+// fIx the bug that ends the game
+// Fix division inputs
+//make deletion of a square animated
+// Add some music
+// Add a play button to start the game
+
+

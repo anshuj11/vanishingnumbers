@@ -118,6 +118,16 @@
         ctx.fillStyle = EQN_COLOR;
         operator = OPERATOR_ARR[randomIn100() % 4];
         ctx.fillText(`${op1} ${operator} ${op2} = ?`, 250, 30);
+        switch (operator) {
+          case "+":
+            return op1 + op2;
+          case "-":
+            return op1 - op2;
+          case "*":
+            return op1 * op2;
+          case "/":
+            return Math.floor(op1 / op2);
+        }
       };
 
       canvas.addEventListener(
@@ -150,7 +160,7 @@
       );
 
       setInterval(draw, 10);
-      setInterval(generateEquations, 2000);
+      console.log(setInterval(generateEquations, 2000));    
     </script>
   </body>
 </html>
