@@ -34,6 +34,7 @@
       ];
       const BACKGROUND_COLOR = "#EEE";
       const TEXT_COLOR = "#FFFFFF";
+      const EQN_COLOR = "#0";
       const TEXT_FONT = "30px Arial";
       const SQR_SIZE = 50;
       const TOTAL_ROWS = 12;
@@ -55,7 +56,6 @@
         ctx.rect(x, y, size, size);
         ctx.fillStyle = fillColor;
         ctx.fill();
-        // ctx.closePath();
       };
 
       const randomIn10 = function() {
@@ -72,6 +72,8 @@
 
       var i = 0;
       var j = 0;
+      var op1 = 0;
+      var op2 = 0;
       var height_arr = [];
       for (let m = 0; m < TOTAL_COLS; m++) {
         height_arr[m] = 600;
@@ -98,13 +100,23 @@
           height_arr[i / SQR_SIZE] -= SQR_SIZE;
           column[i / SQR_SIZE].push([txt, color_choice]);
           i = (randomIn100() % TOTAL_COLS) * SQR_SIZE;
-          j = 0;
+          j = 50;
           let color_ind = randomIn10();
           color_choice = COLOR_ARR[color_ind];
           txt = parseInt(randomIn10(), 10);
         }
         j += DELTA;
       };
+
+      const generateEquations = function() {
+        ctx.fillStyle = BACKGROUND_COLOR;
+        ctx.fillText(`${op1}+${op2}=?`, 250, 30);
+        op1 = randomIn10();
+        op2 = randomIn10();
+        ctx.fillStyle = EQN_COLOR;
+        ctx.fillText(`${op1}+${op2}=?`, 250, 30);
+      };
+
       canvas.addEventListener(
         "click",
         function(e) {
@@ -135,6 +147,7 @@
       );
 
       setInterval(draw, 10);
+      setInterval(generateEquations, 2000);
     </script>
   </body>
 </html>

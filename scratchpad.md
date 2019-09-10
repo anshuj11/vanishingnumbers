@@ -21,4 +21,6 @@ setTimeout(1000);
           //console.log("e.clientX: ", e.clientX, "e.clientY: ", e.clientY);
           console.log("X: ", x, "Y: ", y);
           console.log("After delete Column[", col, "]: ", column[col]);
+        //console.log(op1, "+", op2, "= ?");
+
 
