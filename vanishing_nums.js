@@ -14,16 +14,11 @@ const {
   DELTA
 } = Const;
 
-// import utils from "./utility";
-// const { randomIn10, randomIn100 } = utils;
+import Utils from "./utility";
+const { randomIn10, randomIn100, findOrigin } = Utils;
 
-const randomIn10 = function() {
-  return Math.floor(Math.random() * 10);
-};
-
-const randomIn100 = function() {
-  return Math.floor(Math.random() * 100);
-};
+import Equations from "./equations";
+const { generateEquations } = Equations;
 
 var canvas = document.getElementById("myCanvas");
 var ctx = canvas.getContext("2d");
@@ -35,9 +30,10 @@ const draw_sqr = function(x, y, size = SQR_SIZE, fillColor = BACKGROUND_COLOR) {
   ctx.fill();
 };
 
-const findOrigin = function(num) {
-  //find the highest closest multiple of 50 thats less than this num
-  return num - (num % SQR_SIZE);
+const draw_text_in_sqr = function(txt, locX, locY) {
+  ctx.fillStyle = TEXT_COLOR;
+  ctx.font = TEXT_FONT;
+  ctx.fillText(txt, locX, locY);
 };
 
 var i = 0;
@@ -55,7 +51,7 @@ for (let n = 0; n < TOTAL_COLS; n++) {
 }
 var color_choice = COLOR_ARR[randomIn10()];
 var txt = parseInt(randomIn10(), 10);
-
+var res = generateEquations();
 const draw = function() {
   //Delete the old square
   draw_sqr(i, j - DELTA); //default is background color
@@ -63,40 +59,21 @@ const draw = function() {
   //Redraw the square at the new position
   draw_sqr(i, j, SQR_SIZE, color_choice);
 
-  ctx.fillStyle = TEXT_COLOR;
-  ctx.font = TEXT_FONT;
-  ctx.fillText(txt, i + 10, j + 25);
+  //Write the num inside the square
+  draw_text_in_sqr(txt, i + 10, j + 25);
 
-  if (j == height_arr[i / SQR_SIZE] - SQR_SIZE) {
-    height_arr[i / SQR_SIZE] -= SQR_SIZE;
-    column[i / SQR_SIZE].push([txt, color_choice]);
-    i = (randomIn100() % 16) * SQR_SIZE;
+  let col = i / SQR_SIZE;
+  if (j == height_arr[col] - SQR_SIZE) {
+    height_arr[col] -= SQR_SIZE;
+    column[col].push([txt, color_choice]); //This 3D array has value, color of each cell
+
+    //pick another column randomly for next square
+    i = (randomIn100() % TOTAL_COLS) * SQR_SIZE;
     j = 50;
-    let color_ind = randomIn10();
-    color_choice = COLOR_ARR[color_ind];
-    txt = parseInt(randomIn10(), 10);
+    color_choice = COLOR_ARR[randomIn10()]; //pick a random color from COLOR_ARR
+    txt = parseInt(randomIn10(), 10); //pick a random num between 0 - 9
   }
   j += DELTA;
-};
-
-const generateEquations = function() {
-  ctx.fillStyle = BACKGROUND_COLOR;
-  ctx.fillText(`${op1} ${operator} ${op2} = ?`, 250, 30);
-  op1 = randomIn10();
-  op2 = randomIn10();
-  ctx.fillStyle = EQN_COLOR;
-  operator = OPERATOR_ARR[randomIn100() % 4];
-  ctx.fillText(`${op1} ${operator} ${op2} = ?`, 250, 30);
-  switch (operator) {
-    case "+":
-      return op1 + op2;
-    case "-":
-      return op1 - op2;
-    case "*":
-      return op1 * op2;
-    case "/":
-      return Math.floor(op1 / op2);
-  }
 };
 
 canvas.addEventListener(
@@ -105,22 +82,28 @@ canvas.addEventListener(
     let x = findOrigin(e.clientX);
     let y = findOrigin(e.clientY);
     let col = x / SQR_SIZE;
-    let row = MAX_ROW_NUM - y / SQR_SIZE;
+    let row = MAX_ROW_NUM - y / SQR_SIZE; //rows start at 0 on top
+    if (column[col][row][0] == parseInt(res, 10)) {
+      column[col] = column[col]
+        .slice(0, row)
+        .concat(column[col].slice(row + 1));
 
-    column[col] = column[col].slice(0, row).concat(column[col].slice(row + 1));
-
-    column[col].forEach((sqr, ind) => {
-      draw_sqr(col * SQR_SIZE, 550 - ind * SQR_SIZE, SQR_SIZE, sqr[1]);
-      ctx.fillStyle = TEXT_COLOR;
-      ctx.fillText(sqr[0], col * SQR_SIZE + 10, 550 - ind * SQR_SIZE + 25);
-    });
-
-    let new_rows = column[col].length;
-    draw_sqr(col * SQR_SIZE, 550 - new_rows * SQR_SIZE);
-    height_arr[col] += SQR_SIZE;
+      column[col].forEach((sqr, ind) => {
+        draw_sqr(col * SQR_SIZE, 550 - ind * SQR_SIZE, SQR_SIZE, sqr[1]);
+        draw_text_in_sqr(
+          sqr[0],
+          col * SQR_SIZE + 10,
+          550 - ind * SQR_SIZE + 25
+        );
+      });
+      //Draw a square with background color to delete the topmost sqr on the stack
+      let new_rows = column[col].length;
+      draw_sqr(col * SQR_SIZE, 550 - new_rows * SQR_SIZE);
+      height_arr[col] += SQR_SIZE; //Adds margin for another square in height_arr
+      res = generateEquations();
+    }
   },
   false
 );
 
 setInterval(draw, 10);
-console.log(setInterval(generateEquations, 2000));
