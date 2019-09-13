@@ -106,7 +106,7 @@ canvas.addEventListener(
         draw_rect(840, 100, 5, 50, BACKGROUND_COLOR); //, "#FF0000");
         draw_rect(860, 100, 5, 50, BACKGROUND_COLOR); //, "#FF0000");
         draw_circle();
-        myVar = setInterval(draw, 2);
+        myVar = setInterval(draw, 10);
         paused = 0;
       } else {
         draw_rect(800, 0, 100, 600, PANEL_COLOR);
