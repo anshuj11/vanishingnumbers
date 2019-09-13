@@ -31,6 +31,7 @@ const { draw_rect, draw_triangle, draw_circle } = Drawings;
 var canvas = document.getElementById("myCanvas");
 var ctx = canvas.getContext("2d");
 var paused = 1; //For play Pause button
+var score = 0;
 
 const draw_sqr = function(x, y, size = SQR_SIZE, fillColor = BACKGROUND_COLOR) {
   ctx.beginPath();
@@ -61,14 +62,14 @@ for (let n = 0; n < TOTAL_COLS; n++) {
 }
 var color_choice = COLOR_ARR[randomIn10()];
 var txt = parseInt(randomIn10(), 10);
-var res = generateEquations();
+var res = generateEquations(score);
 const draw = function() {
   //Delete the old square
   draw_sqr(i, j - DELTA); //default is background color
 
   //Redraw the square at the new position
   draw_sqr(i, j, SQR_SIZE, color_choice);
-
+  txt = txt 
   //Write the num inside the square
   draw_text_in_sqr(txt, i + 10, j + 25);
 
@@ -127,7 +128,7 @@ canvas.addEventListener(
       draw_triangle();
       draw_circle();
       clearInterval(myVar);
-      res = generateEquations();
+      res = generateEquations(score);
       paused = 1;
     } else {
       let x = findOrigin(e.clientX);
@@ -137,6 +138,7 @@ canvas.addEventListener(
       let col = x / SQR_SIZE;
       let row = MAX_ROW_NUM - y / SQR_SIZE; //rows start at 0 on top
       if (column[col][row][0] == parseInt(res, 10)) {
+        score++;
         column[col] = column[col]
           .slice(0, row)
           .concat(column[col].slice(row + 1));
@@ -153,7 +155,7 @@ canvas.addEventListener(
         let new_rows = column[col].length;
         draw_sqr(col * SQR_SIZE, 550 - new_rows * SQR_SIZE);
         height_arr[col] += SQR_SIZE; //Adds margin for another square in height_arr
-        res = generateEquations();
+        res = generateEquations(score);
       }
     }
   },
