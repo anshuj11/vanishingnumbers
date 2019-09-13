@@ -28,7 +28,6 @@ const ORIGIN_Y = 100;
 const MAX_X = ORIGIN_X + 800;
 const MAX_Y = ORIGIN_Y + 600;
 
-
 export default {
   COLOR_ARR,
   OPERATOR_ARR,
