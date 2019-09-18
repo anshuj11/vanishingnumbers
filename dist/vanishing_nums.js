@@ -69,7 +69,7 @@ const draw = function() {
 
   //Redraw the square at the new position
   draw_sqr(i, j, SQR_SIZE, color_choice);
-  txt = txt 
+  txt = txt;
   //Write the num inside the square
   draw_text_in_sqr(txt, i + 10, j + 25);
 
@@ -98,8 +98,11 @@ canvas.addEventListener(
   function(e) {
     let x = e.clientX;
     let y = e.clientY;
+    debugger;
+    console.log("x", x);
+    console.log("y", y);
     //We hit the play button
-    if (x > 930 && x < 965 && y >= 200 && y < 280) {
+    if (x > 900 && x < 1000 && y >= 200 && y < 400) {
       if (paused) {
         //repaint the panel
         draw_rect(800, 0, 100, 600, PANEL_COLOR);
@@ -116,7 +119,7 @@ canvas.addEventListener(
         clearInterval(myVar);
         paused = 1;
       }
-    } else if (x > 920 && x < 980 && y >= 300 && y < 420) {
+    } else if (x > 800 && x < 1000 && y >= 200 && y < 600) {
       draw_rect(0, 0, 800, 600);
       for (let m = 0; m < TOTAL_COLS; m++) {
         height_arr[m] = 600;
