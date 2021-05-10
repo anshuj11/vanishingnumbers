@@ -16,6 +16,6 @@
   "homepage": "https:/anshuj11.github.io/vanishingnumbers",
   "dependencies": {
     "gh-pages": "^2.1.1",
-    "lodash": "^4.17.5"
+    "lodash": "^4.17.21"
   }
 }
