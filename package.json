@@ -10,8 +10,8 @@
   "author": "Anshu Jain",
   "license": "ISC",
   "devDependencies": {
-    "webpack": "^4.20.2",
-    "webpack-cli": "^3.1.2"
+    "webpack": "^5.75.0",
+    "webpack-cli": "^5.0.1"
   },
   "homepage": "https:/anshuj11.github.io/vanishingnumbers",
   "dependencies": {
